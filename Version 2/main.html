@@ -469,7 +469,7 @@ function cardClick(card){
 
     if(openCards.length === 3){
         inputLocked = true;
-        setTimeout(closeCards, 5000);
+        setTimeout(closeCards, 3000);
     }
 }
 
@@ -511,7 +511,7 @@ document.getElementById("submit").onclick = ()=>{
         setMessage("Correct","success");
     } else {
         setMessage("Wrong combination","error");
-        setTimeout(closeCards, 3500);
+        setTimeout(closeCards, 3000);
         return;
     }
 
