@@ -14,75 +14,91 @@ body{
     margin:0;
     background:#020513;
     font-family:Inter, sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
-/* LAYOUT */
+/* =======================
+   WRAPPER (CORE LAYOUT)
+======================= */
 #wrapper{
     display:flex;
-    align-items:center;  
     justify-content:center;
-    gap:40px;
-    padding:20px;
-    flex-wrap:wrap;
+    align-items:center;
+
+    gap:clamp(12px, 2vw, 24px);
+    padding:clamp(12px, 2vh, 24px);
+
+    width:100%;
+    max-width:1400px;
+
+    margin:auto; /* 🔥 IMPORTANT CENTER FIX */
+
+    flex-wrap:nowrap;
 }
 
-#wrapper{
-    min-height: calc(100vh - 40px);
-}
-
-
-/* SIDE PANELS */
+/* =======================
+   SIDE PANELS
+======================= */
 #leftPanel, #rightPanel{
     display:flex;
     flex-direction:column;
-    gap:20px;
+
+    gap:clamp(10px, 1.5vh, 16px);
+
+    flex:0 0 clamp(180px, 18vw, 260px);
 }
 
-/* BOX */
-.box{
-    width:100%;
-    max-width:260px;
-    background:#030a1f;
-    border:1px solid #0f172a;
-    border-radius:16px;
-    padding:20px;
-    color:#cbd5f5;
-    font-size:14px;
-    line-height:1.5;
-}
-
-.box h2{
-    margin-top:0;
-    color:white;
-}
-
-/* GAME */
+/* =======================
+   GAME AREA
+======================= */
 #game{
-    width:100%;
-    max-width:800px;
+    flex:1;
+    max-width:clamp(500px, 60vw, 900px);
+    min-width:0;
 }
 
-/* GRID */
+a{
+    text-decoration: none;
+}
+
+/* =======================
+   GRID
+======================= */
 #grid{
     display:grid;
     grid-template-columns:repeat(6, 1fr);
-    gap:18px;
+
+    gap:clamp(10px, 1.2vw, 18px);
 }
 
-/* CARD */
+/* =======================
+   CARD (CLEAN + STABLE)
+======================= */
 .card{
-    aspect-ratio: 92/122;
+    aspect-ratio:92/122;
+
     background:#030a1f;
     border:1px solid #a1abc2;
-    border-radius:16px;
+    border-radius:clamp(8px, 0.8vw, 14px);
+
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center;
+
     cursor:pointer;
+
     color:#64748b;
-    font-size:12px;
-    padding:8px;
+
+    font-size:clamp(10px, 1vw, 13px);
+
+    padding:clamp(6px, 0.8vw, 10px);
+
     transition:0.2s;
 }
 
@@ -103,194 +119,52 @@ body{
 }
 
 .icon-img{
-    width:18px;
-    height:18px;
+    width:clamp(12px, 1.2vw, 18px);
+    height:clamp(12px, 1.2vw, 18px);
 }
 
-/* CONTROLS */
-#controls{
-    margin-top:25px;
-    display:flex;
-    justify-content:center;
-}
-
-button{
-    padding:12px 40px;
-    border-radius:14px;
-    border:none;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-#submit{
-    background:linear-gradient(135deg, #3b82f6, #60a5fa);
-    color:white;
-    position:relative;
-    overflow:hidden;
-    transition:0.2s;
-}
-
-#submit::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
+/* =======================
+   BOXES
+======================= */
+.box{
     width:100%;
-    height:100%;
-    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition:0.4s;
-}
-
-#submit:hover::before{
-    left:100%;
-}
-
-#submit:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 15px rgba(59,130,246,0.6);
-}
-
-/* DOWNLOAD BUTTON */
-.download-btn{
-    width:100%;
-    margin-top:10px;
-    padding:14px;
-    border-radius:12px;
-    background:linear-gradient(135deg, #3b82f6, #60a5fa);
-    color:white;
-    font-weight:bold;
-    border:none;
-    cursor:pointer;
-    position:relative;
-    overflow:hidden;
-    transition:0.2s;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-}
-
-.download-btn::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition:0.4s;
-}
-
-.download-btn:hover::before{
-    left:100%;
-}
-
-#banner{
-    position: fixed;
-    top: 15px;
-    right: 15px;
-
-    text-align: right;
-    font-size: 32px;   /* smaller */
-    font-weight: 900;
-    letter-spacing: 4px;
-
-    margin: 0;
-    z-index: 1001;
-}
-
-#banner span:nth-child(1){color:#85040a;} 
-#banner span:nth-child(2){color:#6e50af;}
-#banner span:nth-child(3){color:#ffffff;}
-#banner span:nth-child(4){color:#ee8811;}
-#banner span:nth-child(5){color:#24db2e;}
-#banner span:nth-child(6){color:#d32ccb;}
-#banner span:nth-child(7){color:#ffffff;}
-
-
-#banner span{
-    display:inline-block;
-    transition:.25s;
-}
-
-#banner span:hover{
-    transform:translateY(-8px) scale(1.1);
-}
-
-.download-btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 15px rgba(59,130,246,0.6);
-}
-
-/* MESSAGE */
-#message{
-    margin-top:15px;
-    text-align:center;
-    font-size:18px;
-    min-height:24px;
-}
-
-.error{ color:#ef4444; }
-.success{ color:#22c55e; }
-
-/* 🔥 RESPONSIVE FIXES (keeps your design intact) */
-@media (max-width: 1000px){
-    #wrapper{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    #leftPanel, #rightPanel{
-        flex-direction:row;
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-}
-
-#stats{
-    position:fixed;
-    top:52px;
-    right:15px;
     background:#030a1f;
     border:1px solid #0f172a;
-    border-radius:12px;
-    padding:10px 14px;
+
+    border-radius:clamp(10px, 1vw, 16px);
+
+    padding:clamp(12px, 2vh, 20px);
+
+    color:#cbd5f5;
+
+    font-size:clamp(12px, 1vw, 14px);
+    line-height:1.5;
+}
+
+.box h2{
+    margin-top:0;
     color:white;
-    font-size:12px;
-    z-index:1000;
+    font-size:clamp(14px, 1.3vw, 20px);
 }
 
-@media (max-width: 900px){
-    #grid{
-        grid-template-columns:repeat(4, 1fr);
-    }
-}
-
-@media (max-width: 600px){
-    #grid{
-        grid-template-columns:repeat(3, 1fr);
-    }
-}
-
-h1{
-    text-align: center; 
-    color:white;
-    font-size: 50px;
-}
-
+/* =======================
+   COLLAPSIBLE
+======================= */
 .collapsible .box-title{
     cursor:pointer;
+
     margin:0;
+
     display:flex;
     justify-content:space-between;
     align-items:center;
+
+    font-size:clamp(13px, 1.1vw, 16px);
 }
 
 .collapsible .box-title::after{
     content:"+";
-    font-size:24px;
+    font-size:clamp(18px, 2vw, 24px);
     transition:.3s;
 }
 
@@ -302,17 +176,228 @@ h1{
     max-height:0;
     overflow:hidden;
     opacity:0;
-    transition:
-        max-height .45s ease,
-        opacity .3s ease,
-        margin-top .3s ease;
+
+    transition:max-height .45s ease, opacity .3s ease, margin-top .3s ease;
+
     margin-top:0;
 }
 
 .collapsible.active .box-content{
-    max-height:1000px;
+    max-height:60vh;
     opacity:1;
-    margin-top:15px;
+    margin-top:clamp(10px, 2vh, 20px);
+}
+
+/* =======================
+   CONTROLS
+======================= */
+#controls{
+    margin-top:clamp(12px, 2vh, 25px);
+    display:flex;
+    justify-content:center;
+}
+
+button{
+    padding:clamp(10px, 1.5vh, 14px) clamp(20px, 2vw, 40px);
+
+    border-radius:clamp(10px, 1vw, 14px);
+
+    border:none;
+
+    font-size:clamp(12px, 1.2vw, 16px);
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+/* =======================
+   SUBMIT
+======================= */
+#submit{
+    background:linear-gradient(135deg, #3b82f6, #60a5fa);
+    color:white;
+
+    position:relative;
+    overflow:hidden;
+
+    transition:0.2s;
+}
+
+#submit::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+
+    transition:0.4s;
+}
+
+#submit:hover::before{
+    left:100%;
+}
+
+#submit:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 2vw rgba(59,130,246,0.6);
+}
+
+/* =======================
+   DOWNLOAD BUTTON
+======================= */
+.download-btn{
+    width:100%;
+
+    margin-top:clamp(8px, 1vh, 12px);
+
+    padding:clamp(10px, 1.5vh, 14px);
+
+    border-radius:clamp(10px, 1vw, 14px);
+
+    background:linear-gradient(135deg, #3b82f6, #60a5fa);
+
+    color:white;
+
+    font-weight:bold;
+
+    border:none;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    gap:clamp(6px, 1vw, 12px);
+
+    transition:0.2s;
+}
+
+.download-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 2vw rgba(59,130,246,0.6);
+}
+
+/* =======================
+   BANNER
+======================= */
+#banner{
+    position:fixed;
+
+    top:clamp(10px, 2vh, 20px);
+    right:clamp(10px, 2vw, 20px);
+
+    font-size:clamp(18px, 2.2vw, 32px);
+    font-weight:900;
+
+    letter-spacing:0.2vw;
+
+    z-index:1001;
+}
+
+#banner span{
+    display:inline-block;
+    transition:.25s;
+}
+
+#banner span:hover{
+    transform:translateY(-1vh) scale(1.1);
+}
+
+/* =======================
+   STATS
+======================= */
+#stats{
+    position:fixed;
+
+    top:clamp(50px, 8vh, 90px);
+    right:clamp(10px, 2vw, 20px);
+
+    background:#030a1f;
+    border:1px solid #0f172a;
+
+    border-radius:clamp(8px, 1vw, 12px);
+
+    padding:clamp(8px, 1vh, 12px);
+
+    font-size:clamp(10px, 1vw, 13px);
+
+    color:white;
+    z-index:1000;
+}
+
+/* =======================
+   MESSAGE
+======================= */
+#message{
+    margin-top:clamp(10px, 2vh, 15px);
+
+    text-align:center;
+
+    font-size:clamp(14px, 1.5vw, 18px);
+
+    min-height:3vh;
+}
+
+.error{ color:#ef4444; }
+.success{ color:#22c55e; }
+
+/* =======================
+   HEADING
+======================= */
+h1{
+    text-align:center;
+
+    color:white;
+
+    font-size:clamp(28px, 4vw, 50px);
+}
+
+/* =======================
+   GLOBAL
+======================= */
+img, canvas, video{
+    max-width:100%;
+    height:auto;
+}
+
+#banner span:nth-child(1){color:#85040a;} 
+#banner span:nth-child(2){color:#6e50af;}
+#banner span:nth-child(3){color:#ffffff;}
+#banner span:nth-child(4){color:#ee8811;}
+#banner span:nth-child(5){color:#24db2e;}
+#banner span:nth-child(6){color:#d32ccb;}
+#banner span:nth-child(7){color:#ffffff;}
+
+/* =======================
+   MOBILE STACK
+======================= */
+@media (max-width: 1100px){
+    #wrapper{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    #leftPanel, #rightPanel{
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:center;
+        width:100%;
+        flex:unset;
+    }
+
+    #game{
+        width:100%;
+        max-width:95vw;
+    }
+
+    #grid{
+        grid-template-columns:repeat(4, 1fr);
+    }
 }
 
 </style>
@@ -495,7 +580,7 @@ function cardClick(card){
 
     if(openCards.length === 3){
         inputLocked = true;
-        setTimeout(closeCards, 5000);
+        setTimeout(closeCards, 2500);
     }
 }
 
@@ -537,7 +622,7 @@ document.getElementById("submit").onclick = ()=>{
         setMessage("Correct","success");
     } else {
         setMessage("Wrong combination","error");
-        setTimeout(closeCards, 3500);
+        setTimeout(closeCards, 4000);
         return;
     }
 
