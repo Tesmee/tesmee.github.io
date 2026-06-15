@@ -1,0 +1,4 @@
+([('main',
+   '/Users/Multitasking/Desktop/Main/Google Drive/Project X/Version 2/tesmee '
+   'dmg/dist/main',
+   'EXECUTABLE')],)

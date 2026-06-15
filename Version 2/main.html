@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="Logo.png">
+<title>TESMEE</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#020513;
+    font-family:Inter, sans-serif;
+}
+
+/* LAYOUT */
+#wrapper{
+    display:flex;
+    align-items:center;   /* ✅ THIS FIXES IT */
+    justify-content:center;
+    gap:40px;
+    padding:20px;
+    flex-wrap:wrap;
+}
+
+#wrapper{
+    min-height: calc(100vh - 40px);
+}
+
+
+/* SIDE PANELS */
+#leftPanel, #rightPanel{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* BOX */
+.box{
+    width:100%;
+    max-width:260px;
+    background:#030a1f;
+    border:1px solid #0f172a;
+    border-radius:16px;
+    padding:20px;
+    color:#cbd5f5;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.box h2{
+    margin-top:0;
+    color:white;
+}
+
+/* GAME */
+#game{
+    width:100%;
+    max-width:800px;
+}
+
+/* GRID */
+#grid{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:18px;
+}
+
+/* CARD */
+.card{
+    aspect-ratio: 92/122;
+    background:#030a1f;
+    border:1px solid #0f172a;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    cursor:pointer;
+    color:#64748b;
+    font-size:12px;
+    padding:8px;
+    transition:0.2s;
+}
+
+.card:hover{
+    border:1px solid #3b82f6;
+}
+
+.card.open{
+    background:#0b1229;
+    border:2px solid #60a5fa;
+    color:white;
+    font-weight:bold;
+}
+
+.card.disabled{
+    opacity:0;
+    pointer-events:none;
+}
+
+.icon-img{
+    width:18px;
+    height:18px;
+}
+
+/* CONTROLS */
+#controls{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+}
+
+button{
+    padding:12px 40px;
+    border-radius:14px;
+    border:none;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#submit{
+    background:linear-gradient(135deg, #3b82f6, #60a5fa);
+    color:white;
+    position:relative;
+    overflow:hidden;
+    transition:0.2s;
+}
+
+#submit::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition:0.4s;
+}
+
+#submit:hover::before{
+    left:100%;
+}
+
+#submit:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px rgba(59,130,246,0.6);
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn{
+    width:100%;
+    margin-top:10px;
+    padding:14px;
+    border-radius:12px;
+    background:linear-gradient(135deg, #3b82f6, #60a5fa);
+    color:white;
+    font-weight:bold;
+    border:none;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+    transition:0.2s;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.download-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition:0.4s;
+}
+
+.download-btn:hover::before{
+    left:100%;
+}
+
+#banner{
+    position: fixed;
+    top: 15px;
+    right: 15px;
+
+    text-align: right;
+    font-size: 32px;   /* smaller */
+    font-weight: 900;
+    letter-spacing: 4px;
+
+    margin: 0;
+    z-index: 1001;
+}
+
+#banner span:nth-child(1){color:#ef4444;}
+#banner span:nth-child(2){color:#f97316;}
+#banner span:nth-child(3){color:#eab308;}
+#banner span:nth-child(4){color:#22c55e;}
+#banner span:nth-child(5){color:#3b82f6;}
+#banner span:nth-child(6){color:#a855f7;}
+#banner span:nth-child(7){color:#ffffff;}
+
+
+#banner span{
+    display:inline-block;
+    transition:.25s;
+}
+
+#banner span:hover{
+    transform:translateY(-8px) scale(1.1);
+}
+
+.download-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px rgba(59,130,246,0.6);
+}
+
+/* MESSAGE */
+#message{
+    margin-top:15px;
+    text-align:center;
+    font-size:18px;
+    min-height:24px;
+}
+
+.error{ color:#ef4444; }
+.success{ color:#22c55e; }
+
+/* 🔥 RESPONSIVE FIXES (keeps your design intact) */
+@media (max-width: 1000px){
+    #wrapper{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    #leftPanel, #rightPanel{
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+}
+
+#stats{
+    position:fixed;
+    top:52px;
+    right:15px;
+    background:#030a1f;
+    border:1px solid #0f172a;
+    border-radius:12px;
+    padding:10px 14px;
+    color:white;
+    font-size:12px;
+    z-index:1000;
+}
+
+@media (max-width: 900px){
+    #grid{
+        grid-template-columns:repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 600px){
+    #grid{
+        grid-template-columns:repeat(3, 1fr);
+    }
+}
+
+h1{
+    text-align: center; 
+    color:white;
+    font-size: 50px;
+}
+
+.collapsible .box-title{
+    cursor:pointer;
+    margin:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.collapsible .box-title::after{
+    content:"+";
+    font-size:24px;
+    transition:.3s;
+}
+
+.collapsible.active .box-title::after{
+    transform:rotate(45deg);
+}
+
+.box-content{
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:
+        max-height .45s ease,
+        opacity .3s ease,
+        margin-top .3s ease;
+    margin-top:0;
+}
+
+.collapsible.active .box-content{
+    max-height:1000px;
+    opacity:1;
+    margin-top:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="banner">
+    <span>T</span>
+    <span>E</span>
+    <span>S</span>
+    <span>M</span>
+    <span>E</span>
+    <span>E</span>
+    <span>™</span>
+</div>
+
+<div id="page">
+<div id="wrapper">
+
+
+<!-- LEFT -->
+<div id="leftPanel">
+<div class="box collapsible active">
+    <h2 class="box-title">Rules</h2>
+    <div class="box-content">
+        <p>1. Flip the cards to reveal hidden words underneath and understand their meanings.</p>
+        <p>2. Select exactly 3 cards that you think form a valid combination or share a common connection.</p>
+        <p>3. Once you’ve chosen your cards, press the submit button to check if your selection is correct.</p>
+        <p>4. If your set is correct, the cards will disappear from the board. If it’s incorrect, they will simply flip back to their original state.</p>
+        <p>5. Continue finding all possible valid combinations until you clear the entire board and complete the game.</p>
+        <br>
+        <p><b><strong>Best played on larger screens- laptops and computers</strong></b></p>
+    </div>
+</div>
+</div>
+
+<!-- GAME -->
+<div id="game">
+<div id="grid"></div>
+
+<div id="controls">
+<button id="submit" disabled>Submit</button>
+</div>
+
+<div id="message"></div>
+</div>
+
+<!-- RIGHT -->
+<div id="rightPanel">
+
+<div class="box collapsible">
+    <h2 class="box-title">App Features</h2>
+    <div class="box-content">
+        <p>Selectable difficulty <br>
+        Selectable subjects<br>
+        Rating system<br>
+        Advanced mode<br>
+        Explanations</p>
+    </div>
+</div>
+
+<div class="box collapsible active">
+    <h2 class="box-title">Download App</h2>
+    <div class="box-content">
+
+        <a href="./TESMEE.dmg" download class="download-btn" id="macDownload">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" class="icon-img">
+        Download for Mac
+        </a>
+
+        <a href="./TESMEE.exe" class="download-btn" id="winDownload">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg" class="icon-img">
+        Download for Windows
+        </a>
+    </div>
+</div>
+
+
+<div class="box collapsible">
+    <h2 class="box-title">The App Itself</h2>
+    <div class="box-content">
+        <p><strong>Windows:</strong> If the app is unverified, Windows may show “Windows protected your PC.” Click “More info” → “Run anyway.” If needed, right-click → “Properties” → check “Unblock” → Apply.</p>
+        <p><strong>Mac:</strong> macOS may block it with “unidentified developer.” Go to System Settings → Privacy & Security → click “Open Anyway,” or right-click the app → “Open.”</p>
+        <p>It may take time to open because Python + PySide6 apps need to start the Python engine and load large Qt libraries before the window appears, unlike native apps that run directly.</p>
+    </div>
+</div>
+
+
+</div>
+</div>
+
+<div id="stats">
+    <div>Total website visits: <span id="visitCount">0</span></div>
+</div>
+
+</div>
+
+<script>
+let data = [];
+let cards = [];
+let openCards = [];
+let validSets = new Set();
+let inputLocked = false;
+
+async function loadCSV(){
+    const res = await fetch(`./data.csv?t=${Date.now()}`);
+    const text = await res.text();
+    const rows = text.split("\n");
+
+    rows.slice(1).forEach(row=>{
+        const parts = row.split(",");
+        if(parts.length >= 5){
+            if(parts[3].trim().toLowerCase() === "basic"){
+                data.push([parts[0].trim(), parts[1].trim(), parts[2].trim()]);
+            }
+        }
+    });
+
+    startGame();
+}
+
+function startGame(){
+    const selected = data.sort(()=>Math.random()-0.5).slice(0,10);
+
+    validSets.clear();
+    let pool = [];
+
+    selected.forEach(set=>{
+        validSets.add(JSON.stringify([...set].sort()));
+        pool.push(...set);
+    });
+
+    pool.sort(()=>Math.random()-0.5);
+
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+
+    cards = [];
+    openCards = [];
+    inputLocked = false;
+
+    pool.forEach(value=>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.textContent = "TESMEE";
+        div.dataset.value = value;
+
+        div.onclick = ()=>cardClick(div);
+
+        grid.appendChild(div);
+        cards.push(div);
+    });
+}
+
+document.getElementById("macDownload").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    await fetch("https://api.counterapi.dev/v1/multitasking/tesmee_downloads/up");
+
+    window.location.href = "./TESMEE.dmg";
+});
+
+document.getElementById("winDownload").addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    await fetch("https://api.counterapi.dev/v1/multitasking/tesmee_downloads/up");
+
+    window.location.href = "./TESMEE.exe";
+});
+
+function cardClick(card){
+    if(inputLocked || card.classList.contains("open") || card.classList.contains("disabled")) return;
+
+    card.classList.add("open");
+    card.textContent = card.dataset.value.split(" ").join("\n");
+
+    openCards.push(card);
+    document.getElementById("submit").disabled = openCards.length !== 3;
+
+    if(openCards.length === 3){
+        inputLocked = true;
+        setTimeout(closeCards, 2500);
+    }
+}
+
+fetch("https://api.counterapi.dev/v1/multitasking/tesmee_visitors/up")
+    .then(r=>r.json())
+    .then(data=>{
+        document.getElementById("visitCount").textContent=data.count;
+    });
+
+document.querySelectorAll(".box-title").forEach(title=>{
+    title.addEventListener("click",()=>{
+
+        const box = title.parentElement;
+
+        box.classList.toggle("active");
+    });
+});
+
+function closeCards(){
+    openCards.forEach(c=>{
+        if(!c.classList.contains("disabled")){
+            c.classList.remove("open");
+            c.textContent = "TESMEE";
+        }
+    });
+
+    openCards = [];
+    inputLocked = false;
+    document.getElementById("submit").disabled = true;
+}
+
+document.getElementById("submit").onclick = ()=>{
+    if(openCards.length !== 3) return;
+
+    const values = openCards.map(c=>c.dataset.value).sort();
+
+    if(validSets.has(JSON.stringify(values))){
+        openCards.forEach(c=>c.classList.add("disabled"));
+        setMessage("Correct","success");
+    } else {
+        setMessage("Wrong combination","error");
+        setTimeout(closeCards, 3500);
+        return;
+    }
+
+    openCards = [];
+    inputLocked = false;
+    document.getElementById("submit").disabled = true;
+
+    if(cards.every(c=>c.classList.contains("disabled"))){
+        setMessage("Game Completed","success");
+    }
+};
+
+
+
+let timeout=null;
+function setMessage(text,type){
+    const msg=document.getElementById("message");
+    msg.textContent=text;
+    msg.className=type;
+
+    clearTimeout(timeout);
+    timeout=setTimeout(()=>{
+        msg.textContent="";
+        msg.className="";
+    },2000);
+}
+
+loadCSV();
+</script>
+
+</body>
+</html>
