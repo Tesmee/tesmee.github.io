@@ -21,8 +21,8 @@ body{
     display:flex;
     align-items:center;  
     justify-content:center;
-    gap:40px;
-    padding:20px;
+    gap:2vw;
+    padding:1vw;
     flex-wrap:wrap;
 }
 
@@ -35,19 +35,19 @@ body{
 #leftPanel, #rightPanel{
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap:1vw;
 }
 
 /* BOX */
 .box{
     width:100%;
-    max-width:260px;
+    max-width:12vw;
     background:#030a1f;
     border:1px solid #0f172a;
-    border-radius:16px;
-    padding:20px;
+    border-radius:1vw;
+    padding:1vw;
     color:#cbd5f5;
-    font-size:14px;
+    font-size:0.5vw;
     line-height:1.5;
 }
 
@@ -59,14 +59,14 @@ body{
 /* GAME */
 #game{
     width:100%;
-    max-width:800px;
+    max-width:33vw;
 }
 
 /* GRID */
 #grid{
     display:grid;
     grid-template-columns:repeat(6, 1fr);
-    gap:18px;
+    gap:0.4vw;
 }
 
 /* CARD */
@@ -81,8 +81,8 @@ body{
     text-align:center;
     cursor:pointer;
     color:#64748b;
-    font-size:12px;
-    padding:8px;
+    font-size:0.5vw;
+    padding:0.4vw;
     transition:0.2s;
 }
 
@@ -103,22 +103,22 @@ body{
 }
 
 .icon-img{
-    width:18px;
-    height:18px;
+    width:1vw;
+    height:1vw;
 }
 
 /* CONTROLS */
 #controls{
-    margin-top:25px;
+    margin-top:1vw;
     display:flex;
     justify-content:center;
 }
 
 button{
-    padding:12px 40px;
-    border-radius:14px;
+    padding:0.5vw 2vw;
+    border-radius:0.5vw;
     border:none;
-    font-size:16px;
+    font-size:0.7vw;
     font-weight:bold;
     cursor:pointer;
 }
@@ -154,8 +154,8 @@ button{
 /* DOWNLOAD BUTTON */
 .download-btn{
     width:100%;
-    margin-top:10px;
-    padding:14px;
+    margin-top:0.5vw;
+    padding:0.5vw;
     border-radius:12px;
     background:linear-gradient(135deg, #3b82f6, #60a5fa);
     color:white;
@@ -169,7 +169,7 @@ button{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
+    gap:0.5vw;
 }
 
 .download-btn::before{
@@ -189,11 +189,11 @@ button{
 
 #banner{
     position: fixed;
-    top: 15px;
-    right: 15px;
+    top: 1vh;
+    right: 1vh;
 
     text-align: right;
-    font-size: 32px;   /* smaller */
+    font-size: 2vw;   /* smaller */
     font-weight: 900;
     letter-spacing: 4px;
 
@@ -226,58 +226,32 @@ button{
 
 /* MESSAGE */
 #message{
-    margin-top:15px;
+    margin-top:1vw;
     text-align:center;
-    font-size:18px;
-    min-height:24px;
+    font-size:1vw;
+    min-height:1.8vh;
 }
 
 .error{ color:#ef4444; }
 .success{ color:#22c55e; }
 
-/* 🔥 RESPONSIVE FIXES (keeps your design intact) */
-@media (max-width: 1000px){
-    #wrapper{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    #leftPanel, #rightPanel{
-        flex-direction:row;
-        flex-wrap:wrap;
-        justify-content:center;
-    }
-}
-
 #stats{
     position:fixed;
-    top:52px;
-    right:15px;
+    top:3.5vw;
+    right:1vh;
     background:#030a1f;
     border:1px solid #0f172a;
-    border-radius:12px;
-    padding:10px 14px;
+    border-radius:0.5vw;
+    padding:0.5vw 0.5vw;
     color:white;
     font-size:12px;
     z-index:1000;
 }
 
-@media (max-width: 900px){
-    #grid{
-        grid-template-columns:repeat(4, 1fr);
-    }
-}
-
-@media (max-width: 600px){
-    #grid{
-        grid-template-columns:repeat(3, 1fr);
-    }
-}
-
 h1{
     text-align: center; 
     color:white;
-    font-size: 50px;
+    font-size: 3vh;
 }
 
 .collapsible .box-title{
@@ -290,7 +264,7 @@ h1{
 
 .collapsible .box-title::after{
     content:"+";
-    font-size:24px;
+    font-size:1vw;
     transition:.3s;
 }
 
@@ -310,9 +284,9 @@ h1{
 }
 
 .collapsible.active .box-content{
-    max-height:1000px;
+    max-height:50vw;
     opacity:1;
-    margin-top:15px;
+    margin-top:0.5vw;
 }
 
 </style>
