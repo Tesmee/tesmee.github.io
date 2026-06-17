@@ -5,9 +5,11 @@
 <title>Redirecting...</title>
 
 <script>
-const isPhone = /Mobi|Android|iPhone|iPod/i.test(navigator.userAgent);
+function isPhone() {
+    return window.innerWidth <= 768;
+}
 
-if (isPhone) {
+if (isPhone()) {
     window.location.replace("Version%202/phone.html");
 } else {
     window.location.replace("Version%202/web.html");
