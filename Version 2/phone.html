@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TESMEE</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    margin:0;
+    background:#020513;
+    font-family:Inter,sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
+#banner{
+    text-align:center;
+    font-size:5vw;
+    font-weight:900;
+    margin-top:2vh;
+    margin-bottom:0.5vh;
+    letter-spacing:0.4vw;
+}
+
+#page{
+    width:100vw;
+}
+
+#banner span:nth-child(1){color:#85040a;}
+#banner span:nth-child(2){color:#6e50af;}
+#banner span:nth-child(3){color:#ffffff;}
+#banner span:nth-child(4){color:#ee8811;}
+#banner span:nth-child(5){color:#24db2e;}
+#banner span:nth-child(6){color:#d32ccb;}
+#banner span:nth-child(7){color:#ffffff;}
+
+#game{
+    width:96vw;
+    margin:auto;
+}
+
+#rules{
+    text-align:center;
+    color:#cbd5f5;
+    font-size:2.8vw;
+    line-height:1.5;
+    margin-bottom:2vh;
+}
+
+#grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:1vw;
+}
+
+.card{ 
+    aspect-ratio:92/122; 
+    background:#030a1f; border:0.3vw solid #a1abc2; border-radius:2vw; display:flex; justify-content:center; align-items:center; text-align:center; color:#64748b; font-size:2.5vw; padding:1vw; user-select:none; 
+    overflow:hidden;
+    white-space:pre-line;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    min-width:0;
+}
+
+#caption{
+    text-align:center;
+    color:#cbd5f5;
+    font-size:4vw;
+    margin-bottom:2vh;
+}
+
+.card{
+    border:0.5vw solid #a1abc2;
+}
+
+.card.open{
+    background:#0b1229;
+    color:white;
+    border-color:#60a5fa;
+    font-weight:bold;
+}
+.card.disabled{
+    opacity:0;
+    pointer-events:none;
+}
+
+#controls{
+    display:flex;
+    justify-content:center;
+    margin-top:2vh;
+}
+
+#submit{
+    width:50vw;
+    height:6vh;
+
+    border:none;
+    border-radius:2vw;
+
+    background:#3b82f6;
+    color:white;
+
+    font-size:4vw;
+    font-weight:bold;
+}
+
+#submit:disabled{
+    opacity:0.5;
+}
+
+#views{
+    text-align:center;
+    color:#cbd5f5;
+    font-size:3vw;
+    margin-bottom:1vh;
+}
+
+#message{
+    text-align:center;
+    color:#ef4444;
+    font-size:3.5vw;
+    margin-top:2vh;
+    height:4vh;
+}
+</style>
+</head>
+
+<body>
+<div id = "page">
+<div id="banner">
+    <span>T</span>
+    <span>E</span>
+    <span>S</span>
+    <span>M</span>
+    <span>E</span>
+    <span>E</span>
+    <span>™</span>
+</div>
+
+<div id="caption">
+    mobile
+</div>
+
+<div id="rules">
+    Flip 3 cards | Create combinations | Submit | Try again | Have Fun
+</div>
+
+<div id="game">
+
+    <div id="grid"></div>
+
+    <div id="controls">
+        <button id="submit" disabled>
+            Submit
+        </button>
+    </div>
+
+    <div id="message"></div>
+
+</div>
+<div id="views">
+    Total Website Visits: <span id="visitCount">0</span>
+</div>
+</div>
+
+<script>
+let data = [];
+let cards = [];
+let openCards = [];
+let validSets = new Set();
+let inputLocked = false;
+
+async function loadCSV(){
+
+    const res = await fetch(`./data.csv?t=${Date.now()}`);
+    const text = await res.text();
+
+    const rows = text.trim().split("\n");
+
+    rows.slice(1).forEach(row=>{
+
+        const parts = row.split(",");
+
+        if(parts.length >= 5){
+
+            if(parts[3].trim().toLowerCase() === "basic"){
+
+                data.push([
+                    parts[0].trim(),
+                    parts[1].trim(),
+                    parts[2].trim()
+                ]);
+            }
+        }
+    });
+
+    startGame();
+}
+
+function startGame(){
+
+    const selected =
+        [...data]
+        .sort(()=>Math.random()-0.5)
+        .slice(0,10);
+
+    validSets.clear();
+
+    let pool = [];
+
+    selected.forEach(set=>{
+
+        validSets.add(
+            JSON.stringify([...set].sort())
+        );
+
+        pool.push(...set);
+    });
+
+    pool.sort(()=>Math.random()-0.5);
+
+    const grid = document.getElementById("grid");
+
+    grid.innerHTML = "";
+
+    cards = [];
+    openCards = [];
+    inputLocked = false;
+
+    pool.forEach(value=>{
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+        card.textContent = "TESMEE";
+        card.dataset.value = value;
+
+        card.onclick = ()=>cardClick(card);
+
+        grid.appendChild(card);
+
+        cards.push(card);
+    });
+}
+
+fetch("https://api.counterapi.dev/v1/multitasking/tesmee_visitors/up")
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById("visitCount").textContent = data.count;
+    });
+
+function cardClick(card){
+
+    if(
+        inputLocked ||
+        card.classList.contains("open") ||
+        card.classList.contains("disabled")
+    ){
+        return;
+    }
+
+    card.classList.add("open");
+
+    card.innerHTML =
+        card.dataset.value.replaceAll(" ","<br>");
+
+    openCards.push(card);
+
+    document.getElementById("submit").disabled =
+        openCards.length !== 3;
+
+    if(openCards.length === 3){
+
+        inputLocked = true;
+
+        setTimeout(()=>{
+
+            if(inputLocked){
+                closeCards();
+            }
+
+        },4000);
+    }
+}
+
+function closeCards(){
+
+    openCards.forEach(card=>{
+
+        if(!card.classList.contains("disabled")){
+
+            card.classList.remove("open");
+            card.textContent = "TESMEE";
+        }
+    });
+
+    openCards = [];
+    inputLocked = false;
+
+    document.getElementById("submit").disabled = true;
+}
+
+let timeout = null;
+
+function setMessage(text){
+
+    const msg = document.getElementById("message");
+
+    msg.textContent = text;
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(()=>{
+        msg.textContent = "";
+    },2000);
+}
+
+document.getElementById("submit").onclick = ()=>{
+
+    if(openCards.length !== 3){
+        return;
+    }
+
+    const values =
+        openCards
+        .map(card=>card.dataset.value)
+        .sort();
+
+    if(
+        validSets.has(
+            JSON.stringify(values)
+        )
+    ){
+
+        openCards.forEach(card=>{
+            card.classList.add("disabled");
+        });
+
+        openCards = [];
+        inputLocked = false;
+
+        document.getElementById("submit").disabled = true;
+
+    }else{
+
+        setMessage("Invalid Combination");
+
+        setTimeout(()=>{
+            closeCards();
+        },2000);
+    }
+};
+
+loadCSV();
+</script>
+
+</body>
+</html>
